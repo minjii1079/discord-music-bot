@@ -47,6 +47,7 @@ async def on_ready():
 @bot.tree.command(name="play", description="Play a song, and add it to the queue.")
 @app_commands.describe(song_query="Search query for the song to play")
 async def play(interaction: discord.Interaction, song_query: str):
+    await interaction.response.defer()
 
     # Defer response for processing time
     await interaction.response.defer()
@@ -103,5 +104,30 @@ async def play(interaction: discord.Interaction, song_query: str):
 
     # Play the audio through the voice client
     voice_client.play(source)
+
+# Simple stop command
+@bot.tree.command(name="stop", description="Stop playing music and disconnect")
+async def stop(interaction: discord.Interaction):
+    voice_client = interaction.guild.voice_client
+    if voice_client:
+        await voice_client.disconnect()
+        await interaction.response.send_message("Stopped playing and disconnected!")
+    else:
+        await interaction.response.send_message("I'm not connected to a voice channel.")
+
+# Simple volume command
+@bot.tree.command(name="volume", description="Change the bot's volume")
+@app_commands.describe(volume="Volume level (0-100)")
+async def volume(interaction: discord.Interaction, volume: int):
+    if not 0 <= volume <= 100:
+        await interaction.response.send_message("Volume must be between 0 and 100!")
+        return
+    
+    voice_client = interaction.guild.voice_client
+    if voice_client and voice_client.source:
+        voice_client.source.volume = volume / 100
+        await interaction.response.send_message(f"Volume set to {volume}%")
+    else:
+        await interaction.response.send_message("No audio is currently playing!")
 
 bot.run(TOKEN, log_handler=handler, log_level=logging.DEBUG)
