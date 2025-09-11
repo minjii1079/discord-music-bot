@@ -23,9 +23,9 @@ I'd need for this project.
 
 This project was also the first time I worked with FFMPEG and yt_dlp. yt_dlp is a command-line audio/video
 downloader that I used to retrieve the requested music while making sure to disable downloading, as I would only
-want the song to be played once. It has been set up to only take the first search result, as that is typically
+want the song to be played once. It has been set up only to take the first search result, as that is typically
 the desired output. Once the URL is retrieved, a source is then created where the URL is passed through
-`FfmpegOpusAudio` for processing, along with the specified options. This source is called by Discord and plays
+`FFmpegPCMAudio` for processing with volume control functionality, along with the specified options. This source is called by Discord and plays
 through the voice client, which is how you hear the song coming out of the bot's "mic". The program reaches completion after
 finally logging to the discord.log file. Once the song is finished, a new one can be requested with the same command
 as mentioned above.
@@ -36,11 +36,17 @@ debugging statements, changing variable and function names, re-reading documenta
 random forums and Reddit threads. The problem turned out to be pretty simple: a typo in the executable file path for FFMPEG.exe.
 That was it.
 
+On a brighter note, a couple of optimizations were made in the code before merging the PR for volume and stop commands.
+The previous method of only syncing commands to the test guild was changed to be global. This allowed the bot to be added to other servers
+without needing to be manually synced, enabling further scaling. Additionally, the `FFmpegOpusAudio` audio class was switched to `FFmpegPCMAudio`
+as the latter offers volume controlability. This allowed the volume command to be implemented.
+
 # 📝 Lessons Learned
 The obvious one is to check the basic stuff before worrying about anything else when something goes wrong. I obviously didn't
-follow a process when trying to debug my code, which resulted in a lot of wasted time and unnecessary hassle. On a more positive note, however,
+follow a process when trying to debug my code, which resulted in a lot of wasted time and unnecessary hassle. In the end,
 I was able to finally create a discord music bot that younger me was too lazy to do. I worked with several technologies for the first time and
-gained more experience with version control (git) and project development. My next project is gonna be much more ambitious, so keep an eye out for that.
+gained more experience with version control (Git) and project development. My next project is likely gonna be more ambitious,
+so keep an eye out for that.
 
 
 
