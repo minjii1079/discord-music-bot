@@ -1,4 +1,4 @@
-# Discord Bot that plays audio from YouTube using yt-dlp and FFMPEG.
+# Discord Bot that plays audio from YouTube.
 # @author: minjii1079
 
 import discord
@@ -14,8 +14,6 @@ from discord import app_commands
 # Load environment variable from .env file 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-
-GUILD_ID = 746763875369877517
 
 # Function to search using yt-dlp, within it's own thread to avoid any blocking
 async def search_ytdlp_async(query, ytdlp_opts):
@@ -35,12 +33,10 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# Event: Bot ready, syncs commands
+# Event: Bot ready, syncs commands globally
 @bot.event
 async def on_ready():
-    test_guild = discord.Object(id=GUILD_ID)
-    await bot.tree.sync(guild=test_guild)
-
+    await bot.tree.sync()
     print(f"{bot.user} is now online!")
 
 # /play command which plays a song based on user input
@@ -94,12 +90,13 @@ async def play(interaction: discord.Interaction, song_query: str):
     # Options for FFMPEG
     ffmpeg_opts = {
         "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
-        "options": "-vn -c:a libopus -b:a 96k",
+        "options": "-vn",
         "executable": "C:\\Users\\Kevin\\Python Projects\\Discord Bot Project\\bin\\ffmpeg.exe",
     }
 
-    # Create audio source
-    source = discord.FFmpegOpusAudio(stream_url, **ffmpeg_opts)
+    # Create audio source with added volume control (Default volume is 50%)
+    ffmpeg_source = discord.FFmpegPCMAudio(stream_url, **ffmpeg_opts)
+    source = discord.PCMVolumeTransformer(ffmpeg_source, volume=0.5)
 
     # Play the audio through the voice client
     voice_client.play(source)
