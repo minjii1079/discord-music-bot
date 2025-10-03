@@ -1,10 +1,10 @@
-# 🎵 Discord Music Bot!
+# Discord Music Bot
 A short project where I made a simple music bot for my Discord server. It runs locally but can be hosted to run 24/7.
 Once online and invited to your server, it will take the command `/play "song name/url here"`. The current build is limited
 to playing only one song at a time, but I'd like to add a queue system to expand its functionality at a later date. **NOTE:** 
 There is currently no token in the `DISCORD_TOKEN` environment variable, as leaving it would be a security vulnerability.
 
-# ✏️ Creation Process
+# Creation Process
 **Tech used:** Python, Discord API, discord.py API wrapper, FFMPEG, yt_dlp
 
 I started by doing some research into Discord bots to find out about the tools I'd need. By using the discord.py API wrapper, I could implement the Discord API and do all the coding in Python.
@@ -30,7 +30,7 @@ through the voice client, which is how you hear the song coming out of the bot's
 finally logging to the discord.log file. Once the song is finished, a new one can be requested with the same command
 as mentioned above.
 
-# ⚙️ Debugging and Optimizations
+# Debugging and Optimizations
 A major struggle for me was getting the bot to send the YouTube URL to FFMPEG. I was trying all sorts of things, like adding
 debugging statements, changing variable and function names, re-reading documentation, searching on YouTube, and surfing
 random forums and Reddit threads. The problem turned out to be pretty simple: a typo in the executable file path for FFMPEG.exe.
@@ -41,7 +41,7 @@ The previous method of only syncing commands to the test guild was changed to be
 without needing to be manually synced, enabling further scaling. Additionally, the `FFmpegOpusAudio` audio class was switched to `FFmpegPCMAudio`
 as the latter offers volume controlability. This allowed the volume command to be implemented.
 
-# 📝 Lessons Learned
+# Lessons Learned
 The obvious one is to check the basic stuff before worrying about anything else when something goes wrong. I obviously didn't
 follow a process when trying to debug my code, which resulted in a lot of wasted time and unnecessary hassle. In the end,
 I was able to finally create a discord music bot that younger me was too lazy to do. I worked with several technologies for the first time and
